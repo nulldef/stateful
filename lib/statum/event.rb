@@ -21,7 +21,7 @@ module Statum
     #
     # @return [Method]
     def before(instance)
-      @before.is_a?(Symbol) ? instance.method(@before) : @before.to_proc unless @before.nil?
+      hook(instance, @before) unless @before.nil?
     end
 
     # Returns after hook
@@ -30,7 +30,7 @@ module Statum
     #
     # @return [Method]
     def after(instance)
-      @after.is_a?(Symbol) ? instance.method(@after) : @after.to_proc unless @after.nil?
+      hook(instance, @after) unless @after.nil?
     end
 
     # Returns true if event can be fired from current state
@@ -64,6 +64,12 @@ module Statum
     # @return [boolean]
     def after?(instance)
       !after(instance).nil?
+    end
+
+    private
+
+    def hook(instance, hook)
+      hook.is_a?(Symbol) ? instance.method(hook) : hook.to_proc unless hook.nil?
     end
   end
 end
