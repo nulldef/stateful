@@ -8,6 +8,8 @@ module Statum
     # @param [String|Symbol] from From state name
     # @param [String|Symbol] to To state name
     # @param [Hash] options Options for event
+    # @option options before [nil|#to_proc] before hook
+    # @option options after [nil|#to_proc] after hook
     def initialize(from, to, options = {})
       @from   = from
       @to     = to

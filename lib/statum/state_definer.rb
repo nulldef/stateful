@@ -6,6 +6,7 @@ module Statum
     # @param [Class] klass Class that includes Statum
     # @param [String|Symbol] field Field that will be used for storing current state
     # @param [Hash] options Hash options
+    # @option options initial [Symbol] initial state
     def initialize(klass, field, options)
       @klass   = klass
       @field   = field.to_sym
