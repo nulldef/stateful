@@ -29,17 +29,5 @@ module Statum
         from == current_state.to_sym
       end
     end
-
-    # Check if before hook exists
-    # @return [boolean]
-    def before?
-      !before.nil?
-    end
-
-    # Checks if after hook present
-    # @return [boolean]
-    def after?
-      !after.nil?
-    end
   end
 end

@@ -129,12 +129,7 @@ class Car
     state :riding
     
     event :ride, idle: :riding,
-                 before: -> { self.started = true },
-                 after: :stop_engine
-  end
-  
-  def stop_engine
-    self.started = false
+                 before: -> { self.started = true }
   end
 end
 ```
@@ -142,6 +137,28 @@ end
 And then before state changes will be executed `before` proc, and after
 changing - `after` proc (in instance context).
 
+If proc receives arguments, an instance would be passed. Because of this, symbols also can be used
+
+```ruby
+class Car
+  include Statum
+  
+  attr_accessor :state, :started
+  
+  statum :state, initial: :idle do
+    state :idle
+    state :riding
+    
+    event :ride, idle: :riding,
+                 before: -> (car) { car.started = true },
+                 after: :stop_engine
+  end
+
+  def stop_engine
+    self.started = false
+  end
+end
+```
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/nulldef/statum.
