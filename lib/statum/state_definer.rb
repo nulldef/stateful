@@ -10,7 +10,7 @@ module Statum
       @klass   = klass
       @field   = field.to_sym
       @initial = options.fetch(:initial, nil)
-      @states  = []
+      @states  = Set[]
       @events  = {}
 
       state(@initial) unless @initial.nil?
@@ -32,7 +32,7 @@ module Statum
     #
     # @param [String|Symbol] name State name
     def state(name)
-      @states << name.to_sym unless @states.include?(name.to_sym)
+      @states << name.to_sym
     end
 
     # Returns any state identifier
