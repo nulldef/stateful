@@ -1,7 +1,7 @@
 module Statum
   # Class for storing event info
   class Event
-    attr_reader :from, :to, :before, :after
+    attr_reader :from, :to
 
     # Creates an event class
     #
@@ -11,8 +11,26 @@ module Statum
     def initialize(from, to, options = {})
       @from   = from
       @to     = to
-      @before = options.fetch(:before, nil)&.to_proc
-      @after  = options.fetch(:after, nil)&.to_proc
+      @before = options.fetch(:before, nil)
+      @after  = options.fetch(:after, nil)
+    end
+
+    # Returns before hook
+    #
+    # @param [Object] instance Instance of class
+    #
+    # @return [Method]
+    def before(instance)
+      @before.is_a?(Symbol) ? instance.method(@before) : @before.to_proc unless @before.nil?
+    end
+
+    # Returns after hook
+    #
+    # @param [Object] instance Instance of class
+    #
+    # @return [Method]
+    def after(instance)
+      @after.is_a?(Symbol) ? instance.method(@after) : @after.to_proc unless @after.nil?
     end
 
     # Returns true if event can be fired from current state
@@ -31,15 +49,21 @@ module Statum
     end
 
     # Check if before hook exists
+    #
+    # @param [Object] instance Instance of class
+    #
     # @return [boolean]
-    def before?
-      !before.nil?
+    def before?(instance)
+      !before(instance).nil?
     end
 
     # Checks if after hook present
+    #
+    # @param [Object] instance Instance of class
+    #
     # @return [boolean]
-    def after?
-      !after.nil?
+    def after?(instance)
+      !after(instance).nil?
     end
   end
 end
