@@ -7,7 +7,7 @@ class BeforeCar
     state :idle
     state :driving
 
-    event :drive, idle: :driving, before: -> (instance) { instance.started = true }
+    event :drive, idle: :driving, before: Proc.new { |instance| instance.started = true }
   end
 end
 
@@ -20,7 +20,7 @@ class AfterCar
     state :idle
     state :driving
 
-    event :stop, driving: :idle, after: -> { self.started = false }
+    event :stop, driving: :idle, after: Proc.new { self.started = false }
   end
 end
 
